@@ -20,95 +20,93 @@ natnet.py: Example network with NATs
 
 from mininet.topo import Topo
 from mininet.net import Mininet
-from mininet.nodelib import NAT
 from mininet.log import setLogLevel
 from mininet.log import info
 from mininet.cli import CLI
 from mininet.util import irange
-# from mininet.node import Node
+from mininet.node import Node
 
-class RestrictedConeNAT(NAT):
+class RestrictedConeNAT(Node):
+    def __init__( self, name, subnet='10.0/8',
+                  localIntf=None, flush=False, **params):
+        """Start NAT/forwarding between Mininet and external network
+           subnet: Mininet subnet (default 10.0/8)
+           flush: flush iptables before installing NAT rules"""
+        super( RestrictedConeNAT, self ).__init__( name, **params )
 
-    # def __init__( self, name, subnet='10.0/8',
-    #               localIntf=None, flush=False, **params):
-    #     """Start NAT/forwarding between Mininet and external network
-    #        subnet: Mininet subnet (default 10.0/8)
-    #        flush: flush iptables before installing NAT rules"""
-    #     super(RestrictedConeNAT, self).__init__(name, **params)
-    #
-    #     self.subnet = subnet
-    #     self.localIntf = localIntf
-    #     self.flush = flush
-    #     self.forwardState = self.cmd( 'sysctl -n net.ipv4.ip_forward' ).strip()
-    #
-    # def setManualConfig( self, intf ):
-    #     """Prevent network-manager/networkd from messing with our interface
-    #        by specifying manual configuration in /etc/network/interfaces"""
-    #     cfile = '/etc/network/interfaces'
-    #     line = '\niface %s inet manual\n' % intf
-    #     try:
-    #         with open( cfile ) as f:
-    #             config = f.read()
-    #     except IOError:
-    #         config = ''
-    #     if ( line ) not in config:
-    #         info( '*** Adding "' + line.strip() + '" to ' + cfile + '\n' )
-    #         with open( cfile, 'a' ) as f:
-    #             f.write( line )
-    #         # Probably need to restart network manager to be safe -
-    #         # hopefully this won't disconnect you
-    #         self.cmd( 'service network-manager restart || netplan apply' )
-    #
-    # # pylint: disable=arguments-differ
-    # def config( self, **params ):
-    #     """Configure the NAT and iptables"""
-    #
-    #     if not self.localIntf:
-    #         self.localIntf = self.defaultIntf()
-    #
-    #     self.setManualConfig( self.localIntf )
-    #
-    #     # Now we can configure manually without interference
-    #     super(RestrictedConeNAT, self).config(**params)
-    #
-    #     if self.flush:
-    #         self.cmd( 'sysctl net.ipv4.ip_forward=0' )
-    #         self.cmd( 'iptables -F' )
-    #         self.cmd( 'iptables -t nat -F' )
-    #         # Create default entries for unmatched traffic
-    #         self.cmd( 'iptables -P INPUT ACCEPT' )
-    #         self.cmd( 'iptables -P OUTPUT ACCEPT' )
-    #         self.cmd( 'iptables -P FORWARD DROP' )
-    #
-    #     # Install NAT rules
-    #     self.cmd( 'iptables -I FORWARD',
-    #               '-i', self.localIntf, '-d', self.subnet, '-j DROP' )
-    #     self.cmd( 'iptables -A FORWARD',
-    #               '-i', self.localIntf, '-s', self.subnet, '-j ACCEPT' )
-    #     self.cmd( 'iptables -A FORWARD',
-    #               '-o', self.localIntf, '-d', self.subnet, '-j ACCEPT' )
-    #     self.cmd( 'iptables -t nat -A POSTROUTING',
-    #               '-s', self.subnet, "'!'", '-d', self.subnet,
-    #               '-j MASQUERADE' )
-    #
-    #     # Instruct the kernel to perform forwarding
-    #     self.cmd( 'sysctl net.ipv4.ip_forward=1' )
-    #
-    # def terminate( self ):
-    #     "Stop NAT/forwarding between Mininet and external network"
-    #     # Remote NAT rules
-    #     self.cmd( 'iptables -D FORWARD',
-    #               '-i', self.localIntf, '-d', self.subnet, '-j DROP' )
-    #     self.cmd( 'iptables -D FORWARD',
-    #               '-i', self.localIntf, '-s', self.subnet, '-j ACCEPT' )
-    #     self.cmd( 'iptables -D FORWARD',
-    #               '-o', self.localIntf, '-d', self.subnet, '-j ACCEPT' )
-    #     self.cmd( 'iptables -t nat -D POSTROUTING',
-    #               '-s', self.subnet, '\'!\'', '-d', self.subnet,
-    #               '-j MASQUERADE' )
-    #     # Put the forwarding state back to what it was
-    #     self.cmd( 'sysctl net.ipv4.ip_forward=%s' % self.forwardState )
-    #     super(RestrictedConeNAT, self).terminate()
+        self.subnet = subnet
+        self.localIntf = localIntf
+        self.flush = flush
+        self.forwardState = self.cmd( 'sysctl -n net.ipv4.ip_forward' ).strip()
+
+    def setManualConfig( self, intf ):
+        """Prevent network-manager/networkd from messing with our interface
+           by specifying manual configuration in /etc/network/interfaces"""
+        cfile = '/etc/network/interfaces'
+        line = '\niface %s inet manual\n' % intf
+        try:
+            with open( cfile ) as f:
+                config = f.read()
+        except IOError:
+            config = ''
+        if ( line ) not in config:
+            info( '*** Adding "' + line.strip() + '" to ' + cfile + '\n' )
+            with open( cfile, 'a' ) as f:
+                f.write( line )
+            # Probably need to restart network manager to be safe -
+            # hopefully this won't disconnect you
+            self.cmd( 'service network-manager restart || netplan apply' )
+
+    # pylint: disable=arguments-differ
+    def config( self, **params ):
+        """Configure the NAT and iptables"""
+
+        if not self.localIntf:
+            self.localIntf = self.defaultIntf()
+
+        self.setManualConfig( self.localIntf )
+
+        # Now we can configure manually without interference
+        super(RestrictedConeNAT, self).config(**params)
+
+        if self.flush:
+            self.cmd( 'sysctl net.ipv4.ip_forward=0' )
+            self.cmd( 'iptables -F' )
+            self.cmd( 'iptables -t nat -F' )
+            # Create default entries for unmatched traffic
+            self.cmd( 'iptables -P INPUT ACCEPT' )
+            self.cmd( 'iptables -P OUTPUT ACCEPT' )
+            self.cmd( 'iptables -P FORWARD DROP' )
+
+        # Install NAT rules
+        self.cmd( 'iptables -I FORWARD',
+                  '-i', self.localIntf, '-d', self.subnet, '-j DROP' )
+        self.cmd( 'iptables -A FORWARD',
+                  '-i', self.localIntf, '-s', self.subnet, '-j ACCEPT' )
+        self.cmd( 'iptables -A FORWARD',
+                  '-o', self.localIntf, '-d', self.subnet, '-j ACCEPT' )
+        self.cmd( 'iptables -t nat -A POSTROUTING',
+                  '-s', self.subnet, "'!'", '-d', self.subnet,
+                  '-j MASQUERADE' )
+
+        # Instruct the kernel to perform forwarding
+        self.cmd( 'sysctl net.ipv4.ip_forward=1' )
+
+    def terminate( self ):
+        "Stop NAT/forwarding between Mininet and external network"
+        # Remote NAT rules
+        self.cmd( 'iptables -D FORWARD',
+                  '-i', self.localIntf, '-d', self.subnet, '-j DROP' )
+        self.cmd( 'iptables -D FORWARD',
+                  '-i', self.localIntf, '-s', self.subnet, '-j ACCEPT' )
+        self.cmd( 'iptables -D FORWARD',
+                  '-o', self.localIntf, '-d', self.subnet, '-j ACCEPT' )
+        self.cmd( 'iptables -t nat -D POSTROUTING',
+                  '-s', self.subnet, '\'!\'', '-d', self.subnet,
+                  '-j MASQUERADE' )
+        # Put the forwarding state back to what it was
+        self.cmd( 'sysctl net.ipv4.ip_forward=%s' % self.forwardState )
+        super(RestrictedConeNAT, self).terminate()
 
 class NetworkTopology(Topo):
     # pylint: disable=arguments-differ
