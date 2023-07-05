@@ -27,10 +27,6 @@ from mininet.util import irange
 from mininet.node import Node
 
 class RestrictedConeNAT(Node):
-    # nat1
-    # debug:  192.168.1.0/24 nat1-eth1 False {'ip': '10.0.0.4/8', 'inetIntf': 'nat1-eth0'}
-    # nat2
-    # debug:  192.168.2.0/24 nat2-eth1 False {'ip': '10.0.0.5/8', 'inetIntf': 'nat2-eth0'}
     def __init__( self, name, subnet='10.0/8',
                   localIntf=None, flush=False, **params):
         """Start NAT/forwarding between Mininet and external network
@@ -78,10 +74,6 @@ class RestrictedConeNAT(Node):
         if self.flush:
             self.cmd( 'sysctl net.ipv4.ip_forward=0' )
             self.cmd( 'iptables -F' )
-            self.cmd( 'iptables -t nat -F' )
-            # self.cmd( 'iptables -P INPUT ACCEPT' )
-            # self.cmd( 'iptables -P OUTPUT ACCEPT' )
-            # self.cmd( 'iptables -P FORWARD DROP' )
 
         self.cmd( 'iptables -t nat -F' )
 
@@ -105,24 +97,6 @@ class RestrictedConeNAT(Node):
         # iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
         self.cmd( 'iptables -A FORWARD',
                   '-i', self.localIntf, '-o', params.get('inetIntf'), '-j ACCEPT' )
-
-        # iptables -t nat -A POSTROUTING -o eth1 -p udp -j SNAT --to-source "public IP"
-        # self.cmd( 'iptables -t nat -A POSTROUTING',
-        #           '-o', params.get('inetIntf'), '-p udp', '--to-source', params.get('ip'), '-j SNAT' )
-
-        # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination "private IP"
-        # self.cmd( 'iptables -t nat -A PREROUTING',
-        #           '-i', params.get('inetIntf'), '-p udp', '--to-destination', params.get('ip'), '-j DNAT' )
-
-        # self.cmd( 'iptables -I FORWARD',
-        #           '-i', self.localIntf, '-d', self.subnet, '-j DROP' )
-        # self.cmd( 'iptables -A FORWARD',
-        #           '-i', self.localIntf, '-s', self.subnet, '-j ACCEPT' )
-        # self.cmd( 'iptables -A FORWARD',
-        #           '-o', self.localIntf, '-d', self.subnet, '-j ACCEPT' )
-        # self.cmd( 'iptables -t nat -A POSTROUTING',
-        #           '-s', self.subnet, "'!'", '-d', self.subnet,
-        #           '-j MASQUERADE' )
 
         # Instruct the kernel to perform forwarding
         self.cmd( 'sysctl net.ipv4.ip_forward=1' )
