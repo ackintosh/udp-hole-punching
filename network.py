@@ -3,7 +3,6 @@
 """
 natnet.py: Example network with NATs
 
-
            h0
            |
            s0
@@ -71,10 +70,7 @@ class RestrictedConeNAT(Node):
         # Now we can configure manually without interference
         super(RestrictedConeNAT, self).config(**params)
 
-        if self.flush:
-            self.cmd( 'sysctl net.ipv4.ip_forward=0' )
-            self.cmd( 'iptables -F' )
-
+        self.cmd( 'iptables -F' )
         self.cmd( 'iptables -t nat -F' )
 
         # Create default entries for unmatched traffic
@@ -82,55 +78,29 @@ class RestrictedConeNAT(Node):
         self.cmd( 'iptables -P OUTPUT ACCEPT' )
         self.cmd( 'iptables -P FORWARD ACCEPT' )
 
-        # # Install NAT rules
-        # iptables -t nat -A POSTROUTING -o nat1-eth0 -p udp -j SNAT --to-source 10.0.0.4/8
+        # Install NAT rules
+        # iptables -t nat -A POSTROUTING -o nat1-eth0 -p udp -j SNAT --to-source <public ip>
         self.cmd( 'iptables -t nat -A POSTROUTING',
                   '-o', params.get('inetIntf'), '-p udp', '-j SNAT', '--to-source', params.get('ip').split('/')[0], verbose=True )
 
-        # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination <private ip goes here>
+        # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination <private ip>
         self.cmd( 'iptables -t nat -A PREROUTING',
                   '-i', params.get('inetIntf'), '-p udp', '-j DNAT', '--to-destination', params.get('hostIp').split('/')[0], verbose=True )
 
-        # iptables -A INPUT -i eth1 -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
-        self.cmd( 'iptables -A INPUT',
+        # iptables -A FORWARD -i eth1 -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
+        self.cmd( 'iptables -A FORWARD',
                   '-i', params.get('inetIntf'), '-p udp', '-m state', '--state ESTABLISHED,RELATED', '-j ACCEPT', verbose=True )
 
-        # iptables -A INPUT -i eth1 -p udp -m state --state NEW -j DROP
-        self.cmd( 'iptables -A INPUT',
+        # iptables -A FORWARD -i eth1 -p udp -m state --state NEW -j DROP
+        self.cmd( 'iptables -A FORWARD',
                   '-i', params.get('inetIntf'), '-p udp', '-m state', '--state NEW', '-j DROP', verbose=True )
-
-
-
-        # # 内部ネットワーク（192.168.0.0/24）から送られてきたパケットの送信元アドレスを、パブリックインターフェイス（eth0）のIPアドレスに変更する（NATを行う）
-        # # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/24 -j MASQUERADE
-        # self.cmd( 'iptables -t nat -A POSTROUTING',
-        #           '-o', params.get('inetIntf'), '-s', self.subnet, '-j MASQUERADE' )
-        #
-        # # パブリックインターフェイス（eth0）から送られてきたパケットを内部ネットワーク（192.168.0.0/24）に転送
-        # # iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
-        # self.cmd( 'iptables -A FORWARD',
-        #           '-i', params.get('inetIntf'), '-o', self.localIntf, '-m state --state RELATED,ESTABLISHED -j ACCEPT' )
-        #
-        # # 内部ネットワーク（192.168.0.0/24）から送られてきたパケットをパブリックインターフェイス（eth0）に転送
-        # # iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
-        # self.cmd( 'iptables -A FORWARD',
-        #           '-i', self.localIntf, '-o', params.get('inetIntf'), '-j ACCEPT' )
 
         # Instruct the kernel to perform forwarding
         self.cmd( 'sysctl net.ipv4.ip_forward=1' )
 
     def terminate( self ):
-        "Stop NAT/forwarding between Mininet and external network"
-        # Remote NAT rules
-        self.cmd( 'iptables -D FORWARD',
-                  '-i', self.localIntf, '-d', self.subnet, '-j DROP' )
-        self.cmd( 'iptables -D FORWARD',
-                  '-i', self.localIntf, '-s', self.subnet, '-j ACCEPT' )
-        self.cmd( 'iptables -D FORWARD',
-                  '-o', self.localIntf, '-d', self.subnet, '-j ACCEPT' )
-        self.cmd( 'iptables -t nat -D POSTROUTING',
-                  '-s', self.subnet, '\'!\'', '-d', self.subnet,
-                  '-j MASQUERADE' )
+        self.cmd( 'iptables -F' )
+        self.cmd( 'iptables -t nat -F' )
         # Put the forwarding state back to what it was
         self.cmd( 'sysctl net.ipv4.ip_forward=%s' % self.forwardState )
         super(RestrictedConeNAT, self).terminate()
