@@ -89,7 +89,7 @@ class RestrictedConeNAT(Node):
 
         # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination <private ip goes here>
         self.cmd( 'iptables -t nat -A PREROUTING',
-                  '-i', params.get('inetIntf'), '-p udp', '-j DNAT', '--to-destination', params.get('hostIp'), verbose=True )
+                  '-i', params.get('inetIntf'), '-p udp', '-j DNAT', '--to-destination', params.get('hostIp').split('/')[0], verbose=True )
 
         # iptables -A INPUT -i eth1 -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
         self.cmd( 'iptables -A INPUT',
