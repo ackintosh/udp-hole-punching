@@ -80,23 +80,41 @@ class RestrictedConeNAT(Node):
         # Create default entries for unmatched traffic
         self.cmd( 'iptables -P INPUT ACCEPT' )
         self.cmd( 'iptables -P OUTPUT ACCEPT' )
-        self.cmd( 'iptables -P FORWARD DROP' )
+        self.cmd( 'iptables -P FORWARD ACCEPT' )
 
-        # Install NAT rules
-        # 内部ネットワーク（192.168.0.0/24）から送られてきたパケットの送信元アドレスを、パブリックインターフェイス（eth0）のIPアドレスに変更する（NATを行う）
-        # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/24 -j MASQUERADE
+        # # Install NAT rules
+        # iptables -t nat -A POSTROUTING -o eth1 -p udp -j SNAT --to-source <public ip goes here>
         self.cmd( 'iptables -t nat -A POSTROUTING',
-                  '-o', params.get('inetIntf'), '-s', self.subnet, '-j MASQUERADE' )
+                  '-o', params.get('inetIntf'), '-p udp', '--to-source', params.get('ip'), '-j SNAT' )
 
-        # パブリックインターフェイス（eth0）から送られてきたパケットを内部ネットワーク（192.168.0.0/24）に転送
-        # iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
-        self.cmd( 'iptables -A FORWARD',
-                  '-i', params.get('inetIntf'), '-o', self.localIntf, '-m state --state RELATED,ESTABLISHED -j ACCEPT' )
+        # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination <private ip goes here>
+        self.cmd( 'iptables -t nat -A PREROUTING',
+                  '-i', params.get('inetIntf'), '-p udp', '--to-destination', params.get('hostIp'), '-j DNAT' )
 
-        # 内部ネットワーク（192.168.0.0/24）から送られてきたパケットをパブリックインターフェイス（eth0）に転送
-        # iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
-        self.cmd( 'iptables -A FORWARD',
-                  '-i', self.localIntf, '-o', params.get('inetIntf'), '-j ACCEPT' )
+        # iptables -A INPUT -i eth1 -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
+        self.cmd( 'iptables -A INPUT',
+                  '-i', params.get('inetIntf'), '-p udp', '-m state', '--state ESTABLISHED,RELATED', '-j ACCEPT' )
+
+        # iptables -A INPUT -i eth1 -p udp -m state --state NEW -j DROP
+        self.cmd( 'iptables -A INPUT',
+                  '-i', params.get('inetIntf'), '-p udp', '-m state', '--state NEW', '-j DROP' )
+
+
+
+        # # 内部ネットワーク（192.168.0.0/24）から送られてきたパケットの送信元アドレスを、パブリックインターフェイス（eth0）のIPアドレスに変更する（NATを行う）
+        # # iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/24 -j MASQUERADE
+        # self.cmd( 'iptables -t nat -A POSTROUTING',
+        #           '-o', params.get('inetIntf'), '-s', self.subnet, '-j MASQUERADE' )
+        #
+        # # パブリックインターフェイス（eth0）から送られてきたパケットを内部ネットワーク（192.168.0.0/24）に転送
+        # # iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+        # self.cmd( 'iptables -A FORWARD',
+        #           '-i', params.get('inetIntf'), '-o', self.localIntf, '-m state --state RELATED,ESTABLISHED -j ACCEPT' )
+        #
+        # # 内部ネットワーク（192.168.0.0/24）から送られてきたパケットをパブリックインターフェイス（eth0）に転送
+        # # iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
+        # self.cmd( 'iptables -A FORWARD',
+        #           '-i', self.localIntf, '-o', params.get('inetIntf'), '-j ACCEPT' )
 
         # Instruct the kernel to perform forwarding
         self.cmd( 'sysctl net.ipv4.ip_forward=1' )
