@@ -83,21 +83,21 @@ class RestrictedConeNAT(Node):
         self.cmd( 'iptables -P FORWARD ACCEPT' )
 
         # # Install NAT rules
-        # iptables -t nat -A POSTROUTING -o eth1 -p udp -j SNAT --to-source <public ip goes here>
+        # iptables -t nat -A POSTROUTING -o nat1-eth0 -p udp -j SNAT --to-source 10.0.0.4/8
         self.cmd( 'iptables -t nat -A POSTROUTING',
-                  '-o', params.get('inetIntf'), '-p udp', '--to-source', params.get('ip'), '-j SNAT' )
+                  '-o', params.get('inetIntf'), '-p udp', '-j SNAT', '--to-source', params.get('ip').split('/')[0], verbose=True )
 
         # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination <private ip goes here>
         self.cmd( 'iptables -t nat -A PREROUTING',
-                  '-i', params.get('inetIntf'), '-p udp', '--to-destination', params.get('hostIp'), '-j DNAT' )
+                  '-i', params.get('inetIntf'), '-p udp', '-j DNAT', '--to-destination', params.get('hostIp'), verbose=True )
 
         # iptables -A INPUT -i eth1 -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
         self.cmd( 'iptables -A INPUT',
-                  '-i', params.get('inetIntf'), '-p udp', '-m state', '--state ESTABLISHED,RELATED', '-j ACCEPT' )
+                  '-i', params.get('inetIntf'), '-p udp', '-m state', '--state ESTABLISHED,RELATED', '-j ACCEPT', verbose=True )
 
         # iptables -A INPUT -i eth1 -p udp -m state --state NEW -j DROP
         self.cmd( 'iptables -A INPUT',
-                  '-i', params.get('inetIntf'), '-p udp', '-m state', '--state NEW', '-j DROP' )
+                  '-i', params.get('inetIntf'), '-p udp', '-m state', '--state NEW', '-j DROP', verbose=True )
 
 
 
