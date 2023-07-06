@@ -132,17 +132,18 @@ class NetworkTopology(Topo):
             localIntf = 'nat%d-eth1' % i
             localIP = '192.168.%d.1' % i
             localSubnet = '192.168.%d.0/24' % i
+            hostIp = '192.168.%d.100/24' % i
             natParams = { 'ip' : '%s/24' % localIP }
             # add NAT to topology
             nat = self.addNode('nat%d' % i, cls=RestrictedConeNAT, subnet=localSubnet,
-                               inetIntf=inetIntf, localIntf=localIntf)
+                               inetIntf=inetIntf, localIntf=localIntf, hostIp=hostIp)
             switch = self.addSwitch('s%d' % i)
             # connect NAT to inet and local switches
             self.addLink(nat, inetSwitch, intfName1=inetIntf)
             self.addLink(nat, switch, intfName1=localIntf, params1=natParams)
             # add host and connect to local switch
             host = self.addHost('h%d' % i,
-                                ip='192.168.%d.100/24' % i,
+                                ip=hostIp,
                                 defaultRoute='via %s' % localIP)
             self.addLink(host, switch)
 
