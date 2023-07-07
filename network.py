@@ -31,14 +31,18 @@ class RestrictedConeNAT(Node):
         print('debug: __init__:', subnet, local_intf, params)
 
         self.subnet = subnet
+
+        if not local_intf:
+            local_intf = self.defaultIntf()
         self.local_intf = local_intf
+
         self.forwardState = self.cmd('sysctl -n net.ipv4.ip_forward').strip()
 
-    def set_manual_config(self, intf):
+    def set_manual_config(self):
         """Prevent network-manager/networkd from messing with our interface
            by specifying manual configuration in /etc/network/interfaces"""
         cfile = '/etc/network/interfaces'
-        line = '\niface %s inet manual\n' % intf
+        line = '\niface %s inet manual\n' % self.local_intf
         try:
             with open(cfile) as f:
                 config = f.read()
@@ -56,10 +60,7 @@ class RestrictedConeNAT(Node):
     def config(self, **params):
         """Configure the NAT and iptables"""
 
-        if not self.local_intf:
-            self.local_intf = self.defaultIntf()
-
-        self.set_manual_config(self.local_intf)
+        self.set_manual_config()
 
         # Now we can configure manually without interference
         super(RestrictedConeNAT, self).config(**params)
