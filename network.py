@@ -26,15 +26,15 @@ from mininet.node import Node
 
 
 class RestrictedConeNAT(Node):
-    def __init__(self, name, subnet='10.0/8', localIntf=None, **params):
+    def __init__(self, name, subnet='10.0/8', local_intf=None, **params):
         super(RestrictedConeNAT, self).__init__(name, **params)
-        print('debug: __init__:', subnet, localIntf, params)
+        print('debug: __init__:', subnet, local_intf, params)
 
         self.subnet = subnet
-        self.localIntf = localIntf
+        self.local_intf = local_intf
         self.forwardState = self.cmd('sysctl -n net.ipv4.ip_forward').strip()
 
-    def setManualConfig(self, intf):
+    def set_manual_config(self, intf):
         """Prevent network-manager/networkd from messing with our interface
            by specifying manual configuration in /etc/network/interfaces"""
         cfile = '/etc/network/interfaces'
@@ -56,10 +56,10 @@ class RestrictedConeNAT(Node):
     def config(self, **params):
         """Configure the NAT and iptables"""
 
-        if not self.localIntf:
-            self.localIntf = self.defaultIntf()
+        if not self.local_intf:
+            self.local_intf = self.defaultIntf()
 
-        self.setManualConfig(self.localIntf)
+        self.set_manual_config(self.local_intf)
 
         # Now we can configure manually without interference
         super(RestrictedConeNAT, self).config(**params)
@@ -73,7 +73,7 @@ class RestrictedConeNAT(Node):
         self.cmd('iptables -P FORWARD ACCEPT')
 
         # Install NAT rules
-        # iptables -t nat -A POSTROUTING -o nat1-eth0 -p udp -j SNAT --to-source <public ip>
+        # iptables -t nat -A POSTROUTING -o <public interface> -p udp -j SNAT --to-source <public ip>
         self.cmd(
             'iptables -t nat -A POSTROUTING',
             '-o',
@@ -85,7 +85,7 @@ class RestrictedConeNAT(Node):
             verbose=True
         )
 
-        # iptables -t nat -A PREROUTING -i eth1 -p udp -j DNAT --to-destination <private ip>
+        # iptables -t nat -A PREROUTING -i <private interface> -p udp -j DNAT --to-destination <private ip>
         self.cmd(
             'iptables -t nat -A PREROUTING',
             '-i',
@@ -97,7 +97,7 @@ class RestrictedConeNAT(Node):
             verbose=True
         )
 
-        # iptables -A FORWARD -i eth1 -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
+        # iptables -A FORWARD -i <public interface> -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
         self.cmd(
             'iptables -A FORWARD',
             '-i',
@@ -109,7 +109,7 @@ class RestrictedConeNAT(Node):
             verbose=True
         )
 
-        # iptables -A FORWARD -i eth1 -p udp -m state --state NEW -j DROP
+        # iptables -A FORWARD -i <public interface> -p udp -m state --state NEW -j DROP
         self.cmd(
             'iptables -A FORWARD',
             '-i',
@@ -122,7 +122,7 @@ class RestrictedConeNAT(Node):
         )
 
         # Instruct the kernel to perform forwarding
-        self.cmd('sysctl net.ipv4.ip_forward=1' )
+        self.cmd('sysctl net.ipv4.ip_forward=1')
 
     def terminate(self ):
         self.cmd('iptables -F')
@@ -156,7 +156,7 @@ class NetworkTopology(Topo):
                 cls=RestrictedConeNAT,
                 subnet=local_subnet,
                 inetIntf=inet_intf,
-                localIntf=local_intf,
+                local_intf=local_intf,
                 hostIp=host_ip
             )
 
