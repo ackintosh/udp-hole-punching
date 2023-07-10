@@ -1,8 +1,9 @@
-import struct
 import logging
+
 
 def init_logger():
     logging.basicConfig(level=logging.INFO, filename='/tmp/udp-hole-punching.log', format='%(asctime)s - %(message)s')
+
 
 def addr_from_args(args, host='127.0.0.1', port=9999):
     if len(args) >= 3:
@@ -16,7 +17,7 @@ def addr_from_args(args, host='127.0.0.1', port=9999):
 
 def msg_to_addr(data):
     ip, port = data.decode('utf-8').strip().split(':')
-    return (ip, int(port))
+    return ip, int(port)
 
 
 def addr_to_msg(addr):
