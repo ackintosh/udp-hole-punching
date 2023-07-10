@@ -1,16 +1,17 @@
 import random
 import socket
-import string
+import subprocess
 import sys
 import time
 from util import *
 
 logger = logging.getLogger()
-client_id = ''.join(random.choices(string.ascii_letters, k=5))
+command = "ip -4 addr show | grep eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'"
+private_ip = subprocess.check_output(command, shell=True).decode('utf-8').strip()
 
 
 def info(message):
-    logger.info('client(%s): %s', client_id, message)
+    logger.info('client(%s): %s', private_ip, message)
 
 
 def main(host='127.0.0.1', port=9999):
@@ -32,9 +33,9 @@ def main(host='127.0.0.1', port=9999):
         time.sleep(random.uniform(1, 5))
         msg_seq += 1
         sock.sendto(b'seq:%d' % msg_seq, peer_addr)
-        info('client: sent a message to: {}'.format(peer_addr))
+        info('sent a message to: {}'.format(peer_addr))
         data, addr = sock.recvfrom(1024)
-        info('client: received from {}: {}'.format(addr, data))
+        info('received from {}: {}'.format(addr, data))
 
 
 if __name__ == '__main__':
