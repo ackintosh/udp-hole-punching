@@ -1,0 +1,181 @@
+<mxfile host="65bd71144e">
+    <diagram id="ExdccTZqctQwAvQB16s_" name="Page-1">
+        <mxGraphModel dx="1976" dy="1072" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="50" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="60" y="888" as="sourcePoint"/>
+                        <mxPoint x="60" y="161" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="419" y="928" as="sourcePoint"/>
+                        <mxPoint x="420" y="160" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="" style="endArrow=classic;html=1;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="59" y="236" as="sourcePoint"/>
+                        <mxPoint x="419" y="236" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="108" value="Send message to host0." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="52">
+                    <mxGeometry x="-0.3278" y="-3" relative="1" as="geometry">
+                        <mxPoint x="-57" y="-16" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="54" value="" style="endArrow=classic;html=1;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="418" y="417" as="sourcePoint"/>
+                        <mxPoint x="63" y="417" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="109" value="Notify host2's external ip/port." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="54">
+                    <mxGeometry x="0.3577" y="1" relative="1" as="geometry">
+                        <mxPoint x="158" y="-16" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="56" value="" style="endArrow=classic;html=1;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="751" y="288" as="sourcePoint"/>
+                        <mxPoint x="416.5" y="285" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="111" value="Send messge to host0." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="56">
+                    <mxGeometry x="-0.5395" y="-1" relative="1" as="geometry">
+                        <mxPoint x="20" y="-10" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="59" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="753" y="931" as="sourcePoint"/>
+                        <mxPoint x="754" y="159" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="61" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="242" y="904" as="sourcePoint"/>
+                        <mxPoint x="239.5" y="161" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="63" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=none;" parent="1" edge="1" source="105">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="597" y="940" as="sourcePoint"/>
+                        <mxPoint x="596.5" y="164" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="73" value="" style="endArrow=classic;html=1;startArrow=none;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="63" y="727" as="sourcePoint"/>
+                        <mxPoint x="748" y="727" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="83" value="&lt;span style=&quot;font-family: -apple-system, &amp;quot;system-ui&amp;quot;, &amp;quot;Segoe UI&amp;quot;, &amp;quot;Noto Sans&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; text-align: left; background-color: rgb(13, 17, 23);&quot;&gt;This triggers nat1&lt;br&gt;to allow and route incoming packets&lt;br&gt;&amp;nbsp;from the host2's external ip/port.&lt;/span&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fontColor=#00CC00;" parent="1" vertex="1">
+                    <mxGeometry x="-279" y="537" width="271" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=271;exitDy=61;exitPerimeter=0;" parent="1" source="83" target="104" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="684.5" y="747.5" as="sourcePoint"/>
+                        <mxPoint x="213.5" y="564" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="86" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="425" y="464" as="sourcePoint"/>
+                        <mxPoint x="755" y="464" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="110" value="Notify host1's external ip/port." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="86">
+                    <mxGeometry x="-0.7939" y="-1" relative="1" as="geometry">
+                        <mxPoint x="44" y="-20" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="90" value="" style="endArrow=classic;html=1;startArrow=none;" edge="1" parent="1" source="101">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="753" y="633" as="sourcePoint"/>
+                        <mxPoint x="64" y="633" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="92" value="&lt;span style=&quot;font-family: -apple-system, &amp;quot;system-ui&amp;quot;, &amp;quot;Segoe UI&amp;quot;, &amp;quot;Noto Sans&amp;quot;, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; text-align: left; background-color: rgb(13, 17, 23);&quot;&gt;This triggers nat2&lt;br&gt;to allow and route incoming packets&lt;br&gt;&amp;nbsp;from the host1's external ip/port.&lt;/span&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fontColor=#00CC00;" vertex="1" parent="1">
+                    <mxGeometry x="857" y="517" width="271" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;entryPerimeter=0;" edge="1" parent="1" source="105" target="92">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="622.5" y="623.75" as="sourcePoint"/>
+                        <mxPoint x="223.5" y="574" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="94" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=4;hachureGap=8;hachureAngle=45;fillColor=#FF0000;sketch=1;fontColor=#00CC00;" vertex="1" parent="1">
+                    <mxGeometry x="570.5" y="530" width="52" height="39" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="99">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="597" y="940" as="sourcePoint"/>
+                        <mxPoint x="596.5" y="164" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="99" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=4;hachureGap=8;hachureAngle=45;fillColor=#00FF00;sketch=1;fontColor=#00CC00;" vertex="1" parent="1">
+                    <mxGeometry x="570.5" y="712" width="52" height="39" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" value="" style="endArrow=none;html=1;startArrow=none;" edge="1" parent="1" target="101">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="752" y="634" as="sourcePoint"/>
+                        <mxPoint x="64" y="633" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="120" value="Send message to host1's external address." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="102">
+                    <mxGeometry x="-0.7575" y="-1" relative="1" as="geometry">
+                        <mxPoint x="70" y="-17" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="101" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=4;hachureGap=8;hachureAngle=45;fillColor=#00FF00;sketch=1;fontColor=#00CC00;" vertex="1" parent="1">
+                    <mxGeometry x="213.5" y="616" width="52" height="39" as="geometry"/>
+                </mxCell>
+                <mxCell id="103" value="" style="endArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="94">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="63" y="548" as="sourcePoint"/>
+                        <mxPoint x="423" y="548" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="119" value="Send message to host2's external address." style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="103">
+                    <mxGeometry x="-0.7833" relative="1" as="geometry">
+                        <mxPoint x="-39" y="-15" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="104" value="" style="shape=ellipse;html=1;dashed=0;whitespace=wrap;perimeter=ellipsePerimeter;fillColor=#3399FF;" vertex="1" parent="1">
+                    <mxGeometry x="231" y="537" width="22" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="106" value="" style="endArrow=none;dashed=1;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=none;" edge="1" parent="1" source="99" target="105">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="596.5" y="712" as="sourcePoint"/>
+                        <mxPoint x="596.5" y="241" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="105" value="" style="shape=ellipse;html=1;dashed=0;whitespace=wrap;perimeter=ellipsePerimeter;fillColor=#3399FF;" vertex="1" parent="1">
+                    <mxGeometry x="585.5" y="624.5" width="22" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="113" value="Host0 recognizes the external ip/port&lt;br&gt;&amp;nbsp;of host1 and host2." style="html=1;dashed=0;whitespace=wrap;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="307" y="311" width="226" height="63" as="geometry"/>
+                </mxCell>
+                <mxCell id="114" value="host1" style="shape=mxgraph.cisco.computers_and_peripherals.pc;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="38" y="91.82" width="47" height="42.18" as="geometry"/>
+                </mxCell>
+                <mxCell id="115" value="host0" style="shape=mxgraph.cisco.computers_and_peripherals.pc;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="396.5" y="94" width="47" height="42.18" as="geometry"/>
+                </mxCell>
+                <mxCell id="116" value="host2" style="shape=mxgraph.cisco.computers_and_peripherals.pc;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="732" y="94" width="47" height="42.18" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="nat1" style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="218" y="98.3" width="43" height="29.22" as="geometry"/>
+                </mxCell>
+                <mxCell id="118" value="nat2" style="shape=mxgraph.cisco.routers.router;sketch=0;html=1;pointerEvents=1;dashed=0;fillColor=#036897;strokeColor=#ffffff;strokeWidth=2;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="575" y="104.78" width="43" height="29.22" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
