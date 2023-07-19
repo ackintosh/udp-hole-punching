@@ -10,6 +10,8 @@ Note that only Linux is supported since Mininet depends on the Linux network nam
 
 ## UDP Hole Punching
 
+Please ensure that Mininet is installed before using this repo. If not, refer to [Download/Get Started With Mininet](https://mininet.org/download/) for installation instructions.
+
 ```bash
 # Start up the topology and run the Mininet CLI.
 $ sudo python3 udp-hole-punching/network.py
