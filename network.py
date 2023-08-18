@@ -86,7 +86,7 @@ class RestrictedConeNAT(Node):
             verbose=True
         )
 
-        # iptables -t nat -A PREROUTING -i <private interface> -p udp -j DNAT --to-destination <private ip>
+        # iptables -t nat -A PREROUTING -i <public interface> -p udp -j DNAT --to-destination <private ip>
         self.cmd(
             'iptables -t nat -A PREROUTING',
             '-i',
